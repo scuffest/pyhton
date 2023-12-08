@@ -9,5 +9,10 @@ with open("adventcode2.txt", "r") as file:
     for index, i in enumerate(rad):
       i.strip(";")
       i.strip(":")
+      farg = ""
       if i.isdigit():
-        print(i)
+        antal = i
+      else:
+        farg = i
+      if int(antal) <13 and farg == "red":
+        print(antal + farg)
