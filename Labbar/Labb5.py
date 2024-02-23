@@ -1,5 +1,5 @@
 def medeltemp():
-    with open("temperaturdata.txt", "r", encoding="utf-8") as file:
+    with open("Labbar/temperaturdata.txt", "r", encoding="utf-8") as file:
         file.readline()
         for i in file:
           lista = i.strip().split(",")
