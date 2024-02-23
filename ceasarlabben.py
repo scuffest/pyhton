@@ -1,0 +1,4 @@
+
+bokstaver = "abcdefghijklmnopqrstvwxyzåäö"
+ 
+ print()
