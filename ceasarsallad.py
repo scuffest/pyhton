@@ -24,7 +24,7 @@ def kryptering(nyckel, meddelande):
       krypterad = storaalfabetet[bokstav]
       hej += krypterad
     elif character.islower():
-      bokstav = (alfabetet.index(character)+nyckel) %28
+      bokstav = (alfabetet.index(character)  +nyckel ) % 28
       krypterad = alfabetet[bokstav]
       hej += krypterad
     else:
