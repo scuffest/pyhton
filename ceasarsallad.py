@@ -1,6 +1,17 @@
+import random
+
 user_input = input("kryptera / dekryptera:")
-nyckel = int(input("Nyckel:"))
+nyckel = input("Nyckel:")
 meddelande = input("Skriv ditt meddelande:")
+
+if nyckel.isdigit():
+  nyckel = int(nyckel)
+  printed_nyckel = nyckel
+
+else:
+  nyckel = random.randint(1,28)
+  printed_nyckel = nyckel
+
 
 def kryptering(nyckel, meddelande):
   alfabetet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "å", "ä", "ö"]
@@ -9,16 +20,16 @@ def kryptering(nyckel, meddelande):
 
   for character in meddelande:
     if character.isupper():
-      bokstav = storaalfabetet.index(character)+nyckel
+      bokstav =   (storaalfabetet.index(character)  +nyckel)   % 28
       krypterad = storaalfabetet[bokstav]
       hej += krypterad
     elif character.islower():
-      bokstav = alfabetet.index(character)+nyckel
+      bokstav = (alfabetet.index(character)+nyckel) %28
       krypterad = alfabetet[bokstav]
       hej += krypterad
     else:
       hej += character
-  print(hej)
+  print(hej, printed_nyckel)
 
 if user_input == "kryptera":
   kryptering(nyckel, meddelande)
