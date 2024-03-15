@@ -30,7 +30,7 @@ def main():
   #Sedan min if sats är ifall användaren väljer att inte skriva in en nyckel så ger den en slumpmässig nyckel.
   if nyckel.isdigit():
     nyckel = int(nyckel)
-    printed_nyckel = nyckel                             #Jag kom på vad printed_nyckel gör den sparar nyckels originalvärde för print, annars blir den negativ för dekryptering
+    printed_nyckel = nyckel     #Jag kom på vad printed_nyckel gör den sparar nyckels originalvärde för print, annars blir den negativ för dekryptering
   else:
     nyckel = random.randint(1,28)
     printed_nyckel = nyckel
