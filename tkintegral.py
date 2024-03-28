@@ -1,25 +1,29 @@
 import tkinter as tk
 
-# Skapa huvudfönstret
-root = tk.Tk()
-root.title("Min första Tkinter-applikation")
+def greet_user():
+    user_name = entry.get()
+    greeting = f"Hello, {user_name}!"
+    label.config(text=greeting)
 
-# Skapa en etikett
-label = tk.Label(root, text="Välkommen till Tkinter!")
+# Create the main application window
+root = tk.Tk()
+root.title("Greeting Program")
+
+# Create a label for instructions
+instruction_label = tk.Label(root, text="Enter your name and press the button:")
+instruction_label.pack()
+
+# Create an entry widget for user input
+entry = tk.Entry(root)
+entry.pack()
+
+# Create a button for greeting the user
+button = tk.Button(root, text="Greet Me", command=greet_user)
+button.pack()
+
+# Create a label for displaying the greeting
+label = tk.Label(root, text="")
 label.pack()
 
-# Skapa en inmatningsruta
-inmatning = tk.Entry(root)
-inmatning.pack()
-
-# Funktion för att hämta text från inmatningsrutan
-def hamta_text():
-    text = inmatning.get()
-    label.config(text="Hej " + text)
-
-# Skapa en knapp för att hämta text
-text_knapp = tk.Button(root, text="Hämta text", command=hamta_text)
-text_knapp.pack()
-
-# Starta huvudloopen
+# Start the Tkinter main loop
 root.mainloop()
