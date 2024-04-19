@@ -1,260 +1,127 @@
 from tkinter import *
+import random
 
-root = Tk()
-root.geometry("330x550")
-root.title("Tic Tac Toe")
+def next_turn(row, column):
 
-root.resizable(0,0)
+    global player
 
-frame1 = Frame(root)
-frame1.pack()
-titleLabel = Label(frame1 , text="Tic Tac Toe" , font=("Arial" , 26) , bg="white" , width=16 )
-titleLabel.grid(row=0 , column=0)
+    if buttons[row][column]['text'] == "" and check_winner() is False:
 
-optionFrame = Frame(root , bg="white")
-optionFrame.pack()
+        if player == players[0]:
 
-frame2 = Frame(root , bg="white")
-frame2.pack()
+            buttons[row][column]['text'] = player
 
-board = { 1:" " , 2:" " , 3:" ",
-          4:" " , 5:" " , 6:" ",
-          7:" " , 8:" " , 9:" " }
+            if check_winner() is False:
+                player = players[1]
+                label.config(text=(players[1]+" turn"))
 
-turn = "x"
-game_end = False
-mode = "singlePlayer"
+            elif check_winner() is True:
+                label.config(text=(players[0]+" wins"))
 
-def changeModeToSinglePlayer(): 
-    global mode 
-    mode = "singlePlayer"
-    singlePlayerButton["bg"] = "lightgreen"
-    multiPlayerButton["bg"] = "lightgrey"
+            elif check_winner() == "Tie":
+                label.config(text="Tie!")
 
-def changeModeToMultiplayer():
-    global mode 
-    mode = "multiPlayer"
-    multiPlayerButton["bg"] = "lightgreen"
-    singlePlayerButton["bg"] = "lightgrey"
-
-def updateBoard():
-    for key in board.keys():
-        buttons[key-1]["text"] = board[key]
-
-def checkForWin(player):
-    # rows
-    if board[1] == board[2] and board[2] == board[3] and board[3] == player:
-        return True
-    
-    elif board[4] == board[5] and board[5] == board[6] and board[6] == player:
-        return True
-    
-    elif board[7] == board[8] and board[8] == board[9] and board[9] == player:
-        return True
-
-    # columns
-    elif board[1] == board[4] and board[4] == board[7] and board[7] == player:
-        return True
-    
-    elif board[2] == board[5] and board[5] == board[8] and board[8] == player:
-        return True
-    
-    elif board[3] == board[6] and board[6] == board[9] and board[9] == player:
-        return True
-    
-    # diagonals
-    elif board[1] == board[5] and board[5] == board[9] and board[9] == player:
-        return True
-    
-    elif board[3] == board[5] and board[5] == board[7] and board[7] == player:
-        return True
-    
-
-    return False
-
-def checkForDraw():
-    for i in board.keys():
-        if board[i] == " ":
-            return False
-    
-    return True
-
-def restartGame():
-    global game_end
-    game_end = False
-    for button in buttons:
-        button["text"] = " "
-
-    for i in board.keys():
-        board[i] = " "
-
-    titleLabel = Label(frame1 , text="Tic Tac Toe" , font=("Arial" , 30) , bg="white" , width=15 )
-    titleLabel.grid(row=0 , column=0)
-
-def minimax(board , isMaximizing):
-    
-    if checkForWin("o"):
-        return 1 
-    
-    if checkForWin("x"):
-        return -1
-    
-    if checkForDraw():
-        return 0
-    
-    if isMaximizing:
-        bestScore = -100
-
-        for key in board.keys():
-            if board[key] == " ":
-                board[key] = "o"
-                score = minimax(board , False) # minimax
-                board[key] = " "
-                if score > bestScore : 
-                    bestScore = score 
-        
-        return bestScore
-    
-    else:
-        bestScore = 100
-
-        for key in board.keys():
-            if board[key] == " ":
-                board[key] = "x"
-                score = minimax(board , True) # minimax
-                board[key] = " "
-                if score < bestScore : 
-                    bestScore = score 
-        
-        return bestScore
-
-def playComputer():
-    bestScore = -100
-    bestMove = 0
-
-    for key in board.keys():
-        if board[key] == " ":
-            board[key] = "o"
-            score = minimax(board , False) # minimax
-            board[key] = " "
-            if score > bestScore : 
-                bestScore = score 
-                bestMove = key
-
-    board[bestMove] = "o"
-
-# Function to play
-def play(event):
-    global turn,game_end
-    if game_end:
-        return
-    
-    button = event.widget
-    buttonText = str(button)
-    clicked = buttonText[-1]
-    if clicked == "n" :
-        clicked = 1
-    else :
-        clicked = int(clicked)
-    
-    if button["text"] == " ":
-        if turn == "x" :
-            board[clicked] = turn
-            if checkForWin(turn):
-                winningLabel = Label(frame1 , text=f"{turn} wins the game", bg="white", font=("Arial" , 26),width=16 )
-                winningLabel.grid(row = 0 , column=0 , columnspan=3)
-                game_end = True
-
-            turn = "o"
-
-            updateBoard()
-
-            if mode == "singlePlayer":
-
-                playComputer()
-
-                if checkForWin(turn):
-                    winningLabel = Label(frame1 , text=f"{turn} wins the game", bg="white", font=("Arial" , 26),width=16   )
-                    winningLabel.grid(row = 0 , column=0 , columnspan=3)
-                    game_end = True
-
-                turn = "x"
-
-                updateBoard()
-
-           
-            
         else:
-            board[clicked] = turn
-            updateBoard()
-            if checkForWin(turn):
-                winningLabel = Label(frame1 , text=f"{turn} wins the game" , bg="white", font=("Arial" , 26),width=16)
-                winningLabel.grid(row = 0 , column=0 , columnspan=3)
-                game_end = True
-            turn = "x"
 
-        
-        if checkForDraw():
-            drawLabel = Label(frame1 , text=f"Game Draw" , bg="white", font=("Arial" , 26), width = 16)
-            drawLabel.grid(row = 0 , column=0 , columnspan=3)
-        
-# ------ UI --------
+            buttons[row][column]['text'] = player
 
-# Change Mode options 
+            if check_winner() is False:
+                player = players[0]
+                label.config(text=(players[0]+" turn"))
 
-singlePlayerButton = Button(optionFrame , text="SinglePlayer" , width=13 , height=1 , font=("Arial" , 15) , bg="lightgrey" , relief=RAISED , borderwidth=5 , command=changeModeToSinglePlayer)
-singlePlayerButton.grid(row=0 , column=0 , columnspan=1 , sticky=NW)
+            elif check_winner() is True:
+                label.config(text=(players[1]+" wins"))
 
-multiPlayerButton = Button(optionFrame , text="Multiplayer" , width=13 , height=1 , font=("Arial" , 15) , bg="lightgrey" , relief=RAISED , borderwidth=5 , command=changeModeToMultiplayer )
-multiPlayerButton.grid(row=0 , column=1 , columnspan=1 , sticky=NW)
+            elif check_winner() == "Tie":
+                label.config(text="Tie!")
 
-# Tic Tac Toe Board 
+def check_winner():
 
-#  First row 
+    for row in range(3):
+        if buttons[row][0]['text'] == buttons[row][1]['text'] == buttons[row][2]['text'] != "":
+            buttons[row][0].config(bg="green")
+            buttons[row][1].config(bg="green")
+            buttons[row][2].config(bg="green")
+            return True
 
-button1 = Button(frame2 , text= " " , width=4 , height=2  , font=("Arial" , 30) , bg="yellow" , relief=RAISED , borderwidth=5)
-button1.grid(row = 0 , column=0)
-button1.bind("<Button-1>" , play)
+    for column in range(3):
+        if buttons[0][column]['text'] == buttons[1][column]['text'] == buttons[2][column]['text'] != "":
+            buttons[0][column].config(bg="green")
+            buttons[1][column].config(bg="green")
+            buttons[2][column].config(bg="green")
+            return True
 
-button2 = Button(frame2 , text= " " , width=4 , height=2  , font=("Arial" , 30), bg="yellow" , relief=RAISED , borderwidth=5 )
-button2.grid(row = 0 , column=1)
-button2.bind("<Button-1>" , play)
+    if buttons[0][0]['text'] == buttons[1][1]['text'] == buttons[2][2]['text'] != "":
+        buttons[0][0].config(bg="green")
+        buttons[1][1].config(bg="green")
+        buttons[2][2].config(bg="green")
+        return True
 
-button3 = Button(frame2 , text= " " , width=4 , height=2  , font=("Arial" , 30), bg="yellow" , relief=RAISED , borderwidth=5 )
-button3.grid(row = 0 , column=2)
-button3.bind("<Button-1>" , play)
+    elif buttons[0][2]['text'] == buttons[1][1]['text'] == buttons[2][0]['text'] != "":
+        buttons[0][2].config(bg="green")
+        buttons[1][1].config(bg="green")
+        buttons[2][0].config(bg="green")
+        return True
 
-#  second row 
+    elif empty_spaces() is False:
 
-button4 = Button(frame2 , text= " " , width=4 , height=2  , font=("Arial" , 30), bg="yellow" , relief=RAISED , borderwidth=5 )
-button4.grid(row = 1 , column=0)
-button4.bind("<Button-1>" , play)
+        for row in range(3):
+            for column in range(3):
+                buttons[row][column].config(bg="yellow")
+        return "Tie"
 
-button5 = Button(frame2 , text= " " , width=4 , height=2  , font=("Arial" , 30), bg="yellow" , relief=RAISED , borderwidth=5 )
-button5.grid(row = 1 , column=1)
-button5.bind("<Button-1>" , play)
+    else:
+        return False
 
-button6 = Button(frame2 , text= " " , width=4 , height=2  , font=("Arial" , 30), bg="yellow" , relief=RAISED , borderwidth=5 )
-button6.grid(row = 1 , column=2)
-button6.bind("<Button-1>" , play)
 
-#  third row 
+def empty_spaces():
 
-button7 = Button(frame2 , text= " " , width=4 , height=2  , font=("Arial" , 30) , bg="yellow" , relief=RAISED , borderwidth=5)
-button7.grid(row = 2 , column=0)
-button7.bind("<Button-1>" , play)
+    spaces = 9
 
-button8 = Button(frame2 , text= " " , width=4 , height=2  , font=("Arial" , 30), bg="yellow" , relief=RAISED , borderwidth=5 )
-button8.grid(row = 2 , column=1)
-button8.bind("<Button-1>" , play)
+    for row in range(3):
+        for column in range(3):
+            if buttons[row][column]['text'] != "":
+                spaces -= 1
 
-button9 = Button(frame2 , text= " " , width=4 , height=2  , font=("Arial" , 30) , bg="yellow" , relief=RAISED , borderwidth=5)
-button9.grid(row = 2 , column=2)
-button9.bind("<Button-1>" , play)
+    if spaces == 0:
+        return False
+    else:
+        return True
 
-restartButton = Button(frame2 , text="Restart Game" , width=19 , height=1 , font=("Arial" , 20) , bg="Green" , relief=RAISED , borderwidth=5 , command=restartGame )
-restartButton.grid(row=4 , column=0 , columnspan=3)
+def new_game():
 
-buttons = [button1 , button2 , button3 , button4 , button5 , button6 , button7 , button8, button9]
+    global player
 
-root.mainloop()
+    player = random.choice(players)
+
+    label.config(text=player+" turn")
+
+    for row in range(3):
+        for column in range(3):
+            buttons[row][column].config(text="",bg="#F0F0F0")
+
+
+window = Tk()
+window.title("Tic-Tac-Toe")
+players = ["x","o"]
+player = random.choice(players)
+buttons = [[0,0,0],
+           [0,0,0],
+           [0,0,0]]
+
+label = Label(text=player + " turn", font=('consolas',40))
+label.pack(side="top")
+
+reset_button = Button(text="restart", font=('consolas',20), command=new_game)
+reset_button.pack(side="top")
+
+frame = Frame(window)
+frame.pack()
+
+for row in range(3):
+    for column in range(3):
+        buttons[row][column] = Button(frame, text="",font=('consolas',40), width=5, height=2,
+                                      command= lambda row=row, column=column: next_turn(row,column))
+        buttons[row][column].grid(row=row,column=column)
+
+window.mainloop()
