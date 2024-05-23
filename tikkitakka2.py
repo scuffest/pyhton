@@ -1,5 +1,6 @@
 # Importera Tkinter-modulen för GUI och random-modulen för att välja spelare slumpmässigt
 from tkinter import *
+from tkinter import messagebox
 import random
 
 # Funktionen next_turn hanterar vad som händer när en spelare tar sitt drag
@@ -18,11 +19,11 @@ def next_turn(row, column):
             # Om det inte finns någon vinnare, byt till nästa spelare
             if check_winner() is False:
                 player = players[1]
-                label.config(text=(players[1]+" turn"))
+                label.config(text=(players[1] + " turn"))
 
             # Om det finns en vinnare, visa att den första spelaren vinner
             elif check_winner() is True:
-                label.config(text=(players[0]+" wins"))
+                label.config(text=(players[0] + " wins"))
 
             # Om det är oavgjort, visa "Tie!"
             elif check_winner() == "Tie":
@@ -37,13 +38,16 @@ def next_turn(row, column):
             # Samma kontroller som ovan men för den andra spelaren
             if check_winner() is False:
                 player = players[0]
-                label.config(text=(players[0]+" turn"))
+                label.config(text=(players[0] + " turn"))
 
             elif check_winner() is True:
-                label.config(text=(players[1]+" wins"))
+                label.config(text=(players[1] + " wins"))
 
             elif check_winner() == "Tie":
                 label.config(text="Tie!")
+    else:
+        # Om rutan redan är använd, visa ett felmeddelande
+        messagebox.showerror("Fel", "Rutan har redan använts, välj en annan ruta")
 
 # Funktionen check_winner kontrollerar om det finns en vinnare
 def check_winner():
@@ -111,32 +115,32 @@ def new_game():
     player = random.choice(players)
 
     # Uppdatera etiketten för att visa vems tur det är
-    label.config(text=player+" turn")
+    label.config(text=player + " turn")
 
     # Återställ alla knappar till deras ursprungliga tillstånd
     for row in range(3):
         for column in range(3):
-            buttons[row][column].config(text="",bg="#F0F0F0")
+            buttons[row][column].config(text="", bg="#F0F0F0")
 
 # Skapa huvudfönstret för spelet och sätt titeln
 window = Tk()
 window.title("Tic-Tac-Toe")
 
 # Definiera spelarna och välj en slumpmässig spelare för att börja
-players = ["x","o"]
+players = ["x", "o"]
 player = random.choice(players)
 
 # Skapa en 2D-lista för att hålla reda på knapparna i spelet
-buttons = [[0,0,0],
-           [0,0,0],
-           [0,0,0]]
+buttons = [[0, 0, 0],
+           [0, 0, 0],
+           [0, 0, 0]]
 
 # Skapa en etikett för att visa vems tur det är
-label = Label(text=player + " turn", font=('consolas',40))
+label = Label(text=player + " turn", font=('consolas', 40))
 label.pack(side="top")
 
 # Skapa en knapp för att starta om spelet
-reset_button = Button(text="restart", font=('consolas',20), command=new_game)
+reset_button = Button(text="restart", font=('consolas', 20), command=new_game)
 reset_button.pack(side="top")
 
 # Skapa en ram för att organisera knapparna
@@ -146,9 +150,9 @@ frame.pack()
 # Skapa knapparna och placera dem i ett rutnät
 for row in range(3):
     for column in range(3):
-        buttons[row][column] = Button(frame, text="",font=('consolas',40), width=5, height=2,
-         command= lambda row=row, column=column: next_turn(row,column))
-        buttons[row][column].grid(row=row,column=column)
+        buttons[row][column] = Button(frame, text="", font=('consolas', 40), width=5, height=2,
+                                      command=lambda row=row, column=column: next_turn(row, column))
+        buttons[row][column].grid(row=row, column=column)
 
 # Starta huvudloopen för att visa fönstret och börja spelet
 window.mainloop()
