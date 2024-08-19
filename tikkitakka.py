@@ -1,17 +1,16 @@
-# Importera nödvändiga moduler från Tkinter och random
 from tkinter import *
 from tkinter import messagebox
 import random
 
 # Funktion som hanterar spelarens drag
 def next_turn(row, column):
-    global player  # Använd global variabel 'player' för att hålla reda på aktuell spelare
+    global player  # Använder global player för att hålla reda på aktuell spelare
 
     # Kontrollera om rutan är tom och om det inte finns någon vinnare
     if buttons[row][column]['text'] == "" and not check_winner():
-        buttons[row][column]['text'] = player  # Sätt spelarens symbol i rutan
+        buttons[row][column]['text'] = player  # Sätt spelarens symbol i rutan alltså X eller O
 
-        # Kontrollera om någon vinner eller om det är oavgjort
+        #ser till om någon vinner eller om det är oavgjort
         if check_winner():
             label.config(text=f"{player} wins")
         elif check_tie():
@@ -21,10 +20,10 @@ def next_turn(row, column):
             player = players[1] if player == players[0] else players[0]
             label.config(text=f"{player} turn")
     else:
-        # Visa felmeddelande om rutan redan är använd
+        # Om någon trycker på en ruta som är redan använt så kommer ett tkiner messagebox poppa upp och säga att rutan är redan använt.
         messagebox.showerror("Fel", "Rutan har redan använts, välj en annan ruta")
 
-# Funktion som kontrollerar om någon vinner
+# Kollar igenom vem som van
 def check_winner():
     for row in range(3):
         if buttons[row][0]['text'] == buttons[row][1]['text'] == buttons[row][2]['text'] != "":
@@ -50,7 +49,7 @@ def check_winner():
 
     return False
 
-# Funktion som kontrollerar om spelet är oavgjort
+# För att se till om det är oavgjord
 def check_tie():
     for row in range(3):
         for col in range(3):
@@ -61,28 +60,26 @@ def check_tie():
             buttons[row][col].config(bg="yellow")
     return True
 
-# Funktion som startar ett nytt spel
+# Startar ett nytt spel därför heter den "new_game"
 def new_game():
     global player
-    player = random.choice(players)  # Välj en slumpmässig spelare
+    player = random.choice(players)  # Väljer en random spelare
     label.config(text=f"{player} turn")  # Uppdatera etiketten
 
     for row in range(3):
         for col in range(3):
-            buttons[row][col].config(text="", bg="#F0F0F0")  # Återställ alla knappar
+            buttons[row][col].config(text="", bg="#F0F0F0")  # Restartar knapparna
 
-# Skapa huvudfönstret för spelet
+# skapa huvudfönstret för spelet
 window = Tk()
-window.title("Tic-Tac-Toe")
+window.title("Tikki-Takka")
 
 # Definiera spelarna och välj en slumpmässig spelare
 players = ["x", "o"]
 player = random.choice(players)
 
-# Skapa etiketten som visar vems tur det är
-# Label är en widget i Tkinter som används för att visa text eller bilder
-# text=f"{player} turn" anger texten som ska visas i etiketten
-# font=('consolas', 40) anger teckensnittet ('consolas') och teckenstorleken (40)
+# Skapa etiketten som visar vems tur det är, Label är en sak i Tkinter som används för att visa exempelvis text eller bilder text=f"{player} 
+#turn" anger texten som ska visas i etiketten, font=('consolas', 40) anger teckensnittet ('consolas') och teckenstorleken (40)
 label = Label(text=f"{player} turn", font=('consolas', 40))
 # pack används för att placera etiketten i fönstret
 label.pack(side="top")
@@ -91,21 +88,21 @@ label.pack(side="top")
 reset_button = Button(text="restart", font=('consolas', 20), command=new_game)
 reset_button.pack(side="top")
 
-# Skapa en ram för knapparna
+# Detta skapar en frame alltså en ram 
 frame = Frame(window)
 frame.pack()
 
 # Skapa en 2D-lista för knapparna
 buttons = [[None for _ in range(3)] for _ in range(3)]
 
-# Skapa knapparna och placera dem i ett rutnät
+# For in range skapar knappar och placerar dem i ramen och gör det till en rutnät
 for row in range(3):
     for col in range(3):
         buttons[row][col] = Button(frame, text="", font=('consolas', 40), width=5, height=2,
                                    # lambda används för att skapa en anonym funktion
-                                   # Här används lambda för att skicka specifika argument (row och col) till next_turn
+                                   # lambda används här för att skicka specifika argument alltså (row och col) till next_turn
                                    command=lambda row=row, col=col: next_turn(row, col))
         buttons[row][col].grid(row=row, column=col)
 
-# Starta huvudloopen för att visa fönstret och börja spelet
+# Detta är mainloopen utan den är det lite svårare att använda tkinter har jag märkt.
 window.mainloop()
