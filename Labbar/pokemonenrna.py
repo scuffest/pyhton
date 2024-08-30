@@ -28,10 +28,10 @@ class Pokemon:
   def ar_levande(self):
     if self.hp > 0:
       print(f"{self.name} lever fortfarande")
-    elif self.hp == 0:
+    elif self.hp <= 0:
       print(f"{self.name} är död")
-    else:
-      print(f"{self.name} är levande")
+  #  else:
+  #    print(f"{self.name} är levande")
 
 
     
@@ -44,6 +44,7 @@ bulbasaur.beskrivning()
 pikachu.trana()
 pikachu.beskrivning()
 
+bulbasaur.attackera(pikachu)
 bulbasaur.attackera(pikachu)
 bulbasaur.attackera(pikachu)
 bulbasaur.attackera(pikachu)
