@@ -1,4 +1,4 @@
-class pokemon:
+class Pokemon:
   def __init__(self, namn, level):
     self.namn = namn
     self.level = level
@@ -8,21 +8,21 @@ class pokemon:
     return f"{self.namn} Level: {self.level} Hp: {self.hp}"
 
 
-class EldPokemon(pokemon):
+class EldPokemon(Pokemon):
   def __init__(self, namn, level):
     super().__init__(namn, level)
 
   def Eldkast(self):
     return f"{self.namn} använder Eldkast och orsakar 75 skada!"
 
-class VattenPokemon(pokemon):
+class VattenPokemon(Pokemon):
   def __init__(self, namn, level):
     super().__init__(namn, level)
 
   def vattenkanon(self):
     return f"{self.namn} använder vattenkanon och orsakar 60 skada!"
 
-class GrasPokemon(pokemon):
+class GrasPokemon(Pokemon):
   def __init__(self, namn, level):
     super().__init__(namn, level)
 
