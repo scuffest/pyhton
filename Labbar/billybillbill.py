@@ -6,7 +6,7 @@ class Vehicle:
     self.__speed = speed
     self.__fuel = fuel
     self.__maxfuel = maxfuel
-    
+  
   def start(self):
     if self.__fuel > 0:
       print(f"{self.__brand} {self.__model} från {self.__year} har startats. Bensinnivån från {self.__maxfuel} minskar till {self.__fuel} liter")
@@ -27,7 +27,7 @@ class Vehicle:
 
     # Getter methods
   def get_brand(self):
-        return self.__brand
+    return self.__brand
 
   def get_model(self):
         return self.__model
